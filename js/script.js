@@ -14,3 +14,17 @@ cityFormEl.addEventListener("submit", function(event){
     console.log
     getCity(userCityName)
 })
+
+console.log("Testing")
+var getCity = function(cityName){
+    let cityUrl=`${rootUrl}/geo/1.0/direct?q=${cityName}&limit=${limit}&appid=${apiKey}`
+    fetch(cityUrl).then(function(response){
+        return response.json().then(function(data){
+        console.log(data, cityName) 
+        lat = data[0].lat
+        lon = data[0].lon
+        console.log(lat, lon)
+        getWeather(lat, lon); 
+        })
+})
+}
