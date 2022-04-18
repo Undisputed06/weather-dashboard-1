@@ -1,5 +1,5 @@
 const cityInputEl = document.querySelector("#city")
-const cityFormEl = document.querySelector("#city-form")
+const cityFormEl = document.querySelector("#city-search")
 const searchBtnEl = document.querySelector(".btn")
 const savedSearch = document.querySelector("saved-search")
 const weatherData = document.querySelector("#current-weather")
@@ -34,7 +34,6 @@ cityFormEl.addEventListener("submit", function(event){
 
 var getCity = function(cityName){
     let cityUrl=`${rootUrl}/geo/1.0/direct?q=${cityName}&limit=${limit}&appid=${apiKey}`
-    cityName.textContent = cityName + "    "  + currentdate
     fetch(cityUrl).then(function(response){
         return response.json().then(function(data){
         let currentDate = dayjs().format('M/DD/YYYY')
@@ -60,6 +59,7 @@ var getWeather = function(lat, lon){
             // let icon = data.current.weather[0].icon;
             let iconData = `http://openweathermap.org/img/wn/${data.current.weather[0].icon}@2x.png`;
                 forecastPopulate(iconData, temp, windspeed, humidity, uvIndex);
+                fiveDayForecast()
                 })
             })
             
@@ -77,13 +77,18 @@ var forecastPopulate = function (icon, temp, windspeed, humidity, uvIndex) {
         }else {
             let dataBox = document.createElement("div");
             dataBox.textContent = fetchData[i]
-            dayBox.append(dataBox);
+            weatherData.append(dataBox);
         }
         
     }
 //     let weatherIcon = document.createElement("img")
-        weatherData.append(dayBox);
-        getFiveDayForecast
+        weatherData.append(dayBox)
     }
+var fiveDayForecast = function(){
+    const fiveDayDiv = document.createElement("div")
+    for(let i =1; i < 6; i ++){
+
+    }
+}
 
 
