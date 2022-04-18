@@ -1,14 +1,16 @@
-const cityFormEl = document.querySelector("#searching")
 const cityInputEl = document.querySelector("#city")
+const cityFormEl = document.querySelector("#city-form")
 const searchBtnEl = document.querySelector(".btn")
+const savedSearch = document.querySelector("saved-search")
 const weatherData = document.querySelector("#current-weather")
-const fiveDayForecast = document.querySelector("#five-day")
+const fiveDayForecast = document.querySelector("#five-day-forecast")
+let cityValue;
 
 console.log(dayjs().format('M/DD/YYYY'))
 
 const cityName = document.querySelector("#city-name")
 const weatherImage = document.querySelector("#weather-img")
-const currentdate = dayjs().format('M/DD/YYYY')
+const date = document.querySelector("#current-date")
 const temp = document.querySelector("#city-temp")
 const wind = document.querySelector("#city-ws")
 const humidity = document.querySelector("#city-humidity")
@@ -29,11 +31,14 @@ cityFormEl.addEventListener("submit", function(event){
     console.log(event.target)
     getCity(userCityName)
 })
+
 var getCity = function(cityName){
     let cityUrl=`${rootUrl}/geo/1.0/direct?q=${cityName}&limit=${limit}&appid=${apiKey}`
     cityName.textContent = cityName + "    "  + currentdate
     fetch(cityUrl).then(function(response){
         return response.json().then(function(data){
+        let currentDate = dayjs().format('M/DD/YYYY')
+        cityName.textContent = response.name + " " + currentDate
         console.log(data, cityName) 
         lat = data[0].lat
         lon = data[0].lon
@@ -64,6 +69,7 @@ var forecastPopulate = function (icon, temp, windspeed, humidity, uvIndex) {
     const fetchData = [icon, temp, windspeed, humidity, uvIndex];
     for (let i = 0; i < 5; i++){
         if(i === 0){
+
             let iconBox = document.createElement("img");
             iconBox.src = fetchData[i];
             dayBox.append(iconBox);
@@ -77,7 +83,7 @@ var forecastPopulate = function (icon, temp, windspeed, humidity, uvIndex) {
     }
 //     let weatherIcon = document.createElement("img")
         weatherData.append(dayBox);
-
+        getFiveDayForecast
     }
 
 
