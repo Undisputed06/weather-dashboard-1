@@ -4,7 +4,6 @@ const searchBtnEl = document.querySelector(".btn")
 const savedSearch = document.querySelector("saved-search")
 const weatherData = document.querySelector("#current-weather")
 const fiveForecastEl = document.querySelector("#five-day-forecast")
-let cityValue;
 
 
 const cityName = document.querySelector("#city-name")
@@ -60,9 +59,9 @@ var getWeather = function(lat, lon){
                 forecastPopulate(iconData, temp, windspeed, humidity, uvIndex);
                 fiveDayForecast(data.daily)
                 })
-            })
-            
+            })    
         }
+
 var forecastPopulate = function (icon, temp, windspeed, humidity, uvIndex) {
     const dayBox = document.createElement("div");
     const fetchData = [icon, temp, windspeed, humidity, uvIndex];
@@ -78,19 +77,23 @@ var forecastPopulate = function (icon, temp, windspeed, humidity, uvIndex) {
             dataBox.textContent = fetchData[i]
             weatherData.append(dataBox);
         }
-        
     }
 //     let weatherIcon = document.createElement("img")
         weatherData.append(dayBox)
     }
-var fiveDayForecast = function(daily){
-    
+var fiveDayForecast = function(daily){  
     for(let i =1; i < 6; i ++){
-        console.log(daily[i])
         let forecastDate = document.querySelector("#date-" + [i]);
-        forecastDate.innerHTML = dayjs().add([i], 'day').format('M/DD/YYYY')
-        // console.log(forecastDate)
-
+        forecastDate.innerHTML = dayjs().add([i], 'day').format('M/DD/YYYY');
+        let forecastImg = document.querySelector("#img-" + [i]);
+        let forecastIcon = daily[i].weather[0].icon;
+        forecastImg.setAttribute("src",`https://openweathermap.org/img/wn/${forecastIcon}@2x.png`);
+        let forecastTemp = document.querySelector("#temp-" + [i]);
+        forecastTemp.innerHTML = "Temp: " + daily[i].temp.day;
+        let forecastWind = document.querySelector("#ws-" + [i]);
+        forecastWind.innerHTML = "Wind: " + daily[i].wind_speed;
+        let forecastHumidity = document. querySelector("#hum-" + [i]) ;
+        forecastHumidity.innerHTML = "Humidity: " + daily[i].humidity;
     }
 }
 
