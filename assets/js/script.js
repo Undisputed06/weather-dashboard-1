@@ -3,10 +3,9 @@ const cityFormEl = document.querySelector("#city-search")
 const searchBtnEl = document.querySelector(".btn")
 const savedSearch = document.querySelector("saved-search")
 const weatherData = document.querySelector("#current-weather")
-const fiveDayForecast = document.querySelector("#five-day-forecast")
+const fiveForecastEl = document.querySelector("#five-day-forecast")
 let cityValue;
 
-console.log(dayjs().format('M/DD/YYYY'))
 
 const cityName = document.querySelector("#city-name")
 const weatherImage = document.querySelector("#weather-img")
@@ -59,7 +58,7 @@ var getWeather = function(lat, lon){
             // let icon = data.current.weather[0].icon;
             let iconData = `http://openweathermap.org/img/wn/${data.current.weather[0].icon}@2x.png`;
                 forecastPopulate(iconData, temp, windspeed, humidity, uvIndex);
-                fiveDayForecast()
+                fiveDayForecast(data.daily)
                 })
             })
             
@@ -84,9 +83,13 @@ var forecastPopulate = function (icon, temp, windspeed, humidity, uvIndex) {
 //     let weatherIcon = document.createElement("img")
         weatherData.append(dayBox)
     }
-var fiveDayForecast = function(){
-    const fiveDayDiv = document.createElement("div")
+var fiveDayForecast = function(daily){
+    
     for(let i =1; i < 6; i ++){
+        console.log(daily[i])
+        let forecastDate = document.querySelector("#date-" + [i]);
+        forecastDate.innerHTML = dayjs().add([i], 'day').format('M/DD/YYYY')
+        // console.log(forecastDate)
 
     }
 }
