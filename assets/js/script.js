@@ -6,7 +6,6 @@ const weatherData = document.querySelector("#current-weather")
 const fiveForecastEl = document.querySelector("#five-day-forecast")
 
 
-
 const weatherImage = document.querySelector("#weather-img")
 const date = document.querySelector("#current-date")
 const temp = document.querySelector("#city-temp")
