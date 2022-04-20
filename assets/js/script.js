@@ -6,13 +6,15 @@ const weatherData = document.querySelector("#current-weather")
 const fiveForecastEl = document.querySelector("#five-day-forecast")
 
 
-const cityName = document.querySelector("#city-name")
+
 const weatherImage = document.querySelector("#weather-img")
 const date = document.querySelector("#current-date")
 const temp = document.querySelector("#city-temp")
 const wind = document.querySelector("#city-ws")
 const humidity = document.querySelector("#city-humidity")
 const uv = document.querySelector("#current-uv")
+
+let currentDate = dayjs().format('M/DD/YYYY')
 
 
 const rootUrl = 'https://api.openweathermap.org';
@@ -25,8 +27,6 @@ let lon;
 cityFormEl.addEventListener("submit", function(event){
     event.preventDefault();
     let userCityName= event.target[0].value
-    console.log(event)
-    console.log(event.target)
     getCity(userCityName)
 })
 
@@ -35,11 +35,12 @@ var getCity = function(cityName){
     fetch(cityUrl).then(function(response){
         return response.json().then(function(data){
         let currentDate = dayjs().format('M/DD/YYYY')
-        cityName.textContent = response.name + " " + currentDate
+        const city = document.querySelector("#city-name")
+        city.innerHTML =  cityName + " " + "(" + " " + currentDate + " " + ")"
         console.log(data, cityName) 
         lat = data[0].lat
         lon = data[0].lon
-        console.log(lat, lon)
+        // console.log(lat, lon)
         getWeather(lat, lon); 
         })
 })
@@ -48,7 +49,7 @@ var getWeather = function(lat, lon){
     let forecastUrl = `${rootUrl}/data/2.5/onecall?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`
     fetch(forecastUrl).then(function(response){
         return response.json().then(function(data){
-            console.log(data, "FORECAST");
+            // console.log(data, "FORECAST");
             
             let temp = data.current.temp
             let windspeed = data.current.wind_speed
@@ -71,7 +72,7 @@ var forecastPopulate = function (icon, temp, windspeed, humidity, uvIndex) {
             let iconBox = document.createElement("img");
             iconBox.src = fetchData[i];
             dayBox.append(iconBox);
-            console.log(iconBox)
+            // console.log(iconBox)
         }else {
             let dataBox = document.createElement("div");
             dataBox.textContent = fetchData[i]
