@@ -32,11 +32,17 @@ form #city {
   border: 1px solid black;
   font-weight: bold;
   margin-bottom: 10px;
+  display:none;
 }
 
 #div-1, #div-2, #div-3, #div-4, #div-5 {
   background-color: #5d6578;
   color: white; 
   font-weight: bold;
+  text-align: left;
 
+}
+
+#five-day {
+  display: none; 
 }

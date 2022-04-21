@@ -5,6 +5,7 @@ const savedSearch = document.querySelector("#saved-search")
 const weatherData = document.querySelector("#current-weather")
 const fiveForecastEl = document.querySelector("#five-day-forecast")
 const fivedayText = document.querySelector("#five-day-text")
+const fiveDayContainer = document.querySelector("#five-day")
 let savedCities =[]
 
 //Current City 
@@ -25,11 +26,17 @@ let limit = 5;
 let lat;
 let lon;
 
+
+
 cityFormEl.addEventListener("submit", function(event){
     event.preventDefault();
     let userCityName= event.target[0].value;
+    weatherData.style.display = "block";
+    fiveDayContainer.style.display = "block";
     getCity(userCityName);
+    
 })
+
 
 
 var getCity = function(cityName){
@@ -109,9 +116,14 @@ var createSaved = function(saveCity){
     if (!savedCities.includes(saveCity)) {
         savedCities.push(saveCity);
         savedSearch.appendChild(saveBtn)
+        localStorage.setItem("cities", JSON.stringify(savedCities))
       }
     console.log(savedCities)
     // })
+}
+
+var loadSaved = function(){
+
 }
 
 
