@@ -5,8 +5,9 @@ const savedSearch = document.querySelector("#saved-search")
 const weatherData = document.querySelector("#current-weather")
 const fiveForecastEl = document.querySelector("#five-day-forecast")
 const fivedayText = document.querySelector("#five-day-text")
+let savedCities =[]
 
-
+//Current City 
 const weatherImage = document.querySelector("#weather-img")
 const date = document.querySelector("#current-date")
 const temp = document.querySelector("#city-temp")
@@ -16,7 +17,7 @@ const uv = document.querySelector("#city-uv")
 
 let currentDate = dayjs().format('M/DD/YYYY')
 
-
+//Root API and KEY
 const rootUrl = 'https://api.openweathermap.org';
 const apiKey ='ffb1997b031804bb94db3209b18b6613'
 
@@ -30,6 +31,7 @@ cityFormEl.addEventListener("submit", function(event){
     getCity(userCityName);
 })
 
+
 var getCity = function(cityName){
     let cityUrl=`${rootUrl}/geo/1.0/direct?q=${cityName}&limit=${limit}&appid=${apiKey}`
     fetch(cityUrl).then(function(response){
@@ -37,12 +39,12 @@ var getCity = function(cityName){
     
         lat = data[0].lat;
         lon = data[0].lon;
-        // console.log(lat, lon)
         getWeather(lat, lon, cityName); 
         createSaved(cityName)
         })
 })
 }
+//Get Current Weather 
 var getWeather = function(lat, lon, cityName){
     let forecastUrl = `${rootUrl}/data/2.5/onecall?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`
     fetch(forecastUrl).then(function(response){
@@ -51,7 +53,7 @@ var getWeather = function(lat, lon, cityName){
             temp.innerHTML = "Temp: " + data.current.temp + "°F"
             wind.innerHTML = "Wind: " + data.current.wind_speed + " MPH"
             humidity.innerHTML = "Humidity: " + data.current.humidity + "%"
-            uv.innerHTML = "UV: " + data.current.uvi
+            uv.innerHTML =  data.current.uvi
             console.log(uv)
             let currentDate = dayjs().format('M/DD/YYYY')
             const city = document.querySelector("#city-name")
@@ -59,13 +61,22 @@ var getWeather = function(lat, lon, cityName){
             weatherImage.setAttribute("src",`http://openweathermap.org/img/wn/${data.current.weather[0].icon}@2x.png`);
             fivedayText.innerHTML = "5 Day Forecast: "
 
-            // city.innerHTML =  cityName + " " + "(" + " " + currentDate + " " + ")"
-                // forecastPopulate(iconData, temp, windspeed, humidity, uvIndex);
+            //Display UV badge
+            if (uv.innerHTML >= 6) {
+                uv.className =  "badge badge-danger"
+            }else if(uv.innerHTML >3) {
+                uv.className = "badge badge-warning"
+            }
+            else{
+                uv.className = "badge badge-success"
+            }
+                //Call 5 day forecast func 
                 fiveDayForecast(data.daily)
                 })
             })    
         }
 
+//Get 5 day forecast
 var fiveDayForecast = function(daily){  
     for(let i =1; i < 6; i ++){
         let forecastDate = document.querySelector("#date-" + [i]);
@@ -83,6 +94,7 @@ var fiveDayForecast = function(daily){
 }
 
 var createSaved = function(saveCity){
+    
     let saveBtn = document.createElement("button");
     console.log(saveBtn)
     console.log(saveCity)
@@ -94,7 +106,11 @@ var createSaved = function(saveCity){
     saveBtn.addEventListener("click", function(){
         getCity(saveCity)
     })
-    savedSearch.appendChild(saveBtn)
+    if (!savedCities.includes(saveCity)) {
+        savedCities.push(saveCity);
+        savedSearch.appendChild(saveBtn)
+      }
+    console.log(savedCities)
     // })
 }
 
