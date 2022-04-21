@@ -1,9 +1,10 @@
 const cityInputEl = document.querySelector("#city")
 const cityFormEl = document.querySelector("#city-search")
 const searchBtnEl = document.querySelector(".btn")
-const savedSearch = document.querySelector("saved-search")
+const savedSearch = document.querySelector("#saved-search")
 const weatherData = document.querySelector("#current-weather")
 const fiveForecastEl = document.querySelector("#five-day-forecast")
+const fivedayText = document.querySelector("#five-day-text")
 
 
 const weatherImage = document.querySelector("#weather-img")
@@ -25,21 +26,20 @@ let lon;
 
 cityFormEl.addEventListener("submit", function(event){
     event.preventDefault();
-    let userCityName= event.target[0].value
-    getCity(userCityName)
+    let userCityName= event.target[0].value;
+    getCity(userCityName);
 })
 
 var getCity = function(cityName){
     let cityUrl=`${rootUrl}/geo/1.0/direct?q=${cityName}&limit=${limit}&appid=${apiKey}`
     fetch(cityUrl).then(function(response){
         return response.json().then(function(data){
-        
-        
-        console.log(data, cityName) 
-        lat = data[0].lat
-        lon = data[0].lon
+    
+        lat = data[0].lat;
+        lon = data[0].lon;
         // console.log(lat, lon)
         getWeather(lat, lon, cityName); 
+        createSaved(cityName)
         })
 })
 }
@@ -47,16 +47,19 @@ var getWeather = function(lat, lon, cityName){
     let forecastUrl = `${rootUrl}/data/2.5/onecall?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`
     fetch(forecastUrl).then(function(response){
         return response.json().then(function(data){
+            console.log(data)
             temp.innerHTML = "Temp: " + data.current.temp
             wind.innerHTML = "Wind: " + data.current.wind_speed
             humidity.innerHTML = "Humidity: " + data.current.humidity
             uv.innerHTML = "UV: " + data.current.uvi
+            console.log(uv)
             let currentDate = dayjs().format('M/DD/YYYY')
             const city = document.querySelector("#city-name")
-            city.textContent =  cityName + " " + "(" + " " + currentDate + " " + ")"
-            weatherImage.setAttribute("src",`http://openweathermap.org/img/wn/${data.current.weather[0].icon}@2x.png`);
-
             city.innerHTML =  cityName + " " + "(" + " " + currentDate + " " + ")"
+            weatherImage.setAttribute("src",`http://openweathermap.org/img/wn/${data.current.weather[0].icon}@2x.png`);
+            fivedayText.innerHTML = "5 Day Forecast: "
+
+            // city.innerHTML =  cityName + " " + "(" + " " + currentDate + " " + ")"
                 // forecastPopulate(iconData, temp, windspeed, humidity, uvIndex);
                 fiveDayForecast(data.daily)
                 })
@@ -79,4 +82,14 @@ var fiveDayForecast = function(daily){
     }
 }
 
+var createSaved = function(saveCity){
+    let saveBtn = document.createElement("button");
+    console.log(saveBtn)
+    console.log(saveCity)
+    saveBtn.textContent = saveCity;
+    saveBtn.setAttribute("type", "submit");
+    saveBtn.setAttribute("value", saveCity)
+    savedSearch.appendChild(saveBtn)
+    // })
+}
 
