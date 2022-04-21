@@ -11,7 +11,7 @@ const date = document.querySelector("#current-date")
 const temp = document.querySelector("#city-temp")
 const wind = document.querySelector("#city-ws")
 const humidity = document.querySelector("#city-humidity")
-const uv = document.querySelector("#current-uv")
+const uv = document.querySelector("#city-uv")
 
 let currentDate = dayjs().format('M/DD/YYYY')
 
@@ -33,54 +33,36 @@ var getCity = function(cityName){
     let cityUrl=`${rootUrl}/geo/1.0/direct?q=${cityName}&limit=${limit}&appid=${apiKey}`
     fetch(cityUrl).then(function(response){
         return response.json().then(function(data){
-        let currentDate = dayjs().format('M/DD/YYYY')
-        const city = document.querySelector("#city-name")
-        city.innerHTML =  cityName + " " + "(" + " " + currentDate + " " + ")"
+        
+        
         console.log(data, cityName) 
         lat = data[0].lat
         lon = data[0].lon
         // console.log(lat, lon)
-        getWeather(lat, lon); 
+        getWeather(lat, lon, cityName); 
         })
 })
 }
-var getWeather = function(lat, lon){
+var getWeather = function(lat, lon, cityName){
     let forecastUrl = `${rootUrl}/data/2.5/onecall?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`
     fetch(forecastUrl).then(function(response){
         return response.json().then(function(data){
-            // console.log(data, "FORECAST");
-            
-            let temp = data.current.temp
-            let windspeed = data.current.wind_speed
-            let humidity = data.current.humidity
-            let uvIndex = data.current.uvi
-            // let icon = data.current.weather[0].icon;
-            let iconData = `http://openweathermap.org/img/wn/${data.current.weather[0].icon}@2x.png`;
-                forecastPopulate(iconData, temp, windspeed, humidity, uvIndex);
+            temp.innerHTML = "Temp: " + data.current.temp
+            wind.innerHTML = "Wind: " + data.current.wind_speed
+            humidity.innerHTML = "Humidity: " + data.current.humidity
+            uv.innerHTML = "UV: " + data.current.uvi
+            let currentDate = dayjs().format('M/DD/YYYY')
+            const city = document.querySelector("#city-name")
+            city.textContent =  cityName + " " + "(" + " " + currentDate + " " + ")"
+            weatherImage.setAttribute("src",`http://openweathermap.org/img/wn/${data.current.weather[0].icon}@2x.png`);
+
+            city.innerHTML =  cityName + " " + "(" + " " + currentDate + " " + ")"
+                // forecastPopulate(iconData, temp, windspeed, humidity, uvIndex);
                 fiveDayForecast(data.daily)
                 })
             })    
         }
 
-var forecastPopulate = function (icon, temp, windspeed, humidity, uvIndex) {
-    const dayBox = document.createElement("div");
-    const fetchData = [icon, temp, windspeed, humidity, uvIndex];
-    for (let i = 0; i < 5; i++){
-        if(i === 0){
-
-            let iconBox = document.createElement("img");
-            iconBox.src = fetchData[i];
-            dayBox.append(iconBox);
-            // console.log(iconBox)
-        }else {
-            let dataBox = document.createElement("div");
-            dataBox.textContent = fetchData[i]
-            weatherData.append(dataBox);
-        }
-    }
-//     let weatherIcon = document.createElement("img")
-        weatherData.append(dayBox)
-    }
 var fiveDayForecast = function(daily){  
     for(let i =1; i < 6; i ++){
         let forecastDate = document.querySelector("#date-" + [i]);

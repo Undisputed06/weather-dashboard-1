@@ -14,3 +14,8 @@ header h1{
   text-align: center;
   padding: 20px;
 }
+
+.text-img {
+  display: flex;
+  align-items:center;
+}
