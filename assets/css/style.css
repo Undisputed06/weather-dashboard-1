@@ -5,7 +5,7 @@
 }
 
 body {
-  background-color: #d9dcd6;
+  background-color: white;
 }
 
 header h1{
@@ -15,7 +15,28 @@ header h1{
   padding: 20px;
 }
 
+form  .btn {
+  margin-top: 15px;
+}
+
+form #city {
+  width: 100%;
+}
+
 .text-img {
   display: flex;
   align-items:center;
+}
+
+.top {
+  border: 1px solid black;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+#div-1, #div-2, #div-3, #div-4, #div-5 {
+  background-color: #5d6578;
+  color: white; 
+  font-weight: bold;
+
 }

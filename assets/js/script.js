@@ -48,9 +48,9 @@ var getWeather = function(lat, lon, cityName){
     fetch(forecastUrl).then(function(response){
         return response.json().then(function(data){
             console.log(data)
-            temp.innerHTML = "Temp: " + data.current.temp
-            wind.innerHTML = "Wind: " + data.current.wind_speed
-            humidity.innerHTML = "Humidity: " + data.current.humidity
+            temp.innerHTML = "Temp: " + data.current.temp + "°F"
+            wind.innerHTML = "Wind: " + data.current.wind_speed + " MPH"
+            humidity.innerHTML = "Humidity: " + data.current.humidity + "%"
             uv.innerHTML = "UV: " + data.current.uvi
             console.log(uv)
             let currentDate = dayjs().format('M/DD/YYYY')
@@ -74,11 +74,11 @@ var fiveDayForecast = function(daily){
         let forecastIcon = daily[i].weather[0].icon;
         forecastImg.setAttribute("src",`https://openweathermap.org/img/wn/${forecastIcon}@2x.png`);
         let forecastTemp = document.querySelector("#temp-" + [i]);
-        forecastTemp.innerHTML = "Temp: " + daily[i].temp.day;
+        forecastTemp.innerHTML = "Temp: " + daily[i].temp.day + "°F";
         let forecastWind = document.querySelector("#ws-" + [i]);
-        forecastWind.innerHTML = "Wind: " + daily[i].wind_speed;
+        forecastWind.innerHTML = "Wind: " + daily[i].wind_speed + " MPH";
         let forecastHumidity = document. querySelector("#hum-" + [i]) ;
-        forecastHumidity.innerHTML = "Humidity: " + daily[i].humidity;
+        forecastHumidity.innerHTML = "Humidity: " + daily[i].humidity + "%";
     }
 }
 
@@ -89,7 +89,13 @@ var createSaved = function(saveCity){
     saveBtn.textContent = saveCity;
     saveBtn.setAttribute("type", "submit");
     saveBtn.setAttribute("value", saveCity)
+    saveBtn.className = "btn btn-secondary btn-lg btn-block";
+    
+    saveBtn.addEventListener("click", function(){
+        getCity(saveCity)
+    })
     savedSearch.appendChild(saveBtn)
     // })
 }
+
 
