@@ -27,16 +27,15 @@ let lat;
 let lon;
 
 
-
+//Get User Input and Send to get City Function 
 cityFormEl.addEventListener("submit", function(event){
     event.preventDefault();
     let userCityName= event.target[0].value;
     weatherData.style.display = "block";
     fiveDayContainer.style.display = "block";
     getCity(userCityName);
-    
+    loadButtons();
 })
-
 
 
 var getCity = function(cityName){
@@ -57,8 +56,8 @@ var getWeather = function(lat, lon, cityName){
     fetch(forecastUrl).then(function(response){
         return response.json().then(function(data){
             console.log(data)
-            temp.innerHTML = "Temp: " + data.current.temp + "°F"
-            wind.innerHTML = "Wind: " + data.current.wind_speed + " MPH"
+            temp.innerHTML = "Temp: " + data.current.temp.toFixed(2) + "°F"
+            wind.innerHTML = "Wind: " + data.current.wind_speed.toFixed(2) + " MPH"
             humidity.innerHTML = "Humidity: " + data.current.humidity + "%"
             uv.innerHTML =  data.current.uvi
             console.log(uv)
@@ -83,6 +82,7 @@ var getWeather = function(lat, lon, cityName){
             })    
         }
 
+
 //Get 5 day forecast
 var fiveDayForecast = function(daily){  
     for(let i =1; i < 6; i ++){
@@ -92,9 +92,9 @@ var fiveDayForecast = function(daily){
         let forecastIcon = daily[i].weather[0].icon;
         forecastImg.setAttribute("src",`https://openweathermap.org/img/wn/${forecastIcon}@2x.png`);
         let forecastTemp = document.querySelector("#temp-" + [i]);
-        forecastTemp.innerHTML = "Temp: " + daily[i].temp.day + "°F";
+        forecastTemp.innerHTML = "Temp: " + daily[i].temp.day.toFixed(2) + "°F";
         let forecastWind = document.querySelector("#ws-" + [i]);
-        forecastWind.innerHTML = "Wind: " + daily[i].wind_speed + " MPH";
+        forecastWind.innerHTML = "Wind: " + daily[i].wind_speed.toFixed(2) + " MPH";
         let forecastHumidity = document. querySelector("#hum-" + [i]) ;
         forecastHumidity.innerHTML = "Humidity: " + daily[i].humidity + "%";
     }
@@ -119,11 +119,9 @@ var createSaved = function(saveCity){
         localStorage.setItem("cities", JSON.stringify(savedCities))
       }
     console.log(savedCities)
+
     // })
 }
 
-var loadSaved = function(){
-
-}
 
 
