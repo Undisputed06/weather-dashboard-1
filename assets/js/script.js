@@ -26,6 +26,15 @@ let limit = 5;
 let lat;
 let lon;
 
+// $(document).ready(function(){
+//     buttonLoad()
+// })
+window.onload = function() {
+    weatherData.style.display = "hidden";
+    fiveDayContainer.style.display = "hidden";
+    buttonLoad();
+}
+
 
 //Get User Input and Send to get City Function 
 cityFormEl.addEventListener("submit", function(event){
@@ -34,7 +43,7 @@ cityFormEl.addEventListener("submit", function(event){
     weatherData.style.display = "block";
     fiveDayContainer.style.display = "block";
     getCity(userCityName);
-    loadButtons();
+    
 })
 
 
@@ -100,27 +109,42 @@ var fiveDayForecast = function(daily){
     }
 }
 
+var buttonLoad = function() {
+    loadCities =localStorage.getItem("cities")
+    parsedCities = JSON.parse(loadCities)
+    for (let i =0; i < parsedCities.length; i++){
+        createSaved(parsedCities[i])  
+    }
+}
+
+
+var divHandler = function() {
+
+}
+
 var createSaved = function(saveCity){
     
     let saveBtn = document.createElement("button");
-    console.log(saveBtn)
-    console.log(saveCity)
     saveBtn.textContent = saveCity;
     saveBtn.setAttribute("type", "submit");
     saveBtn.setAttribute("value", saveCity)
     saveBtn.className = "btn btn-secondary btn-lg btn-block";
     
     saveBtn.addEventListener("click", function(){
+        console.log("clickme")
         getCity(saveCity)
     })
     if (!savedCities.includes(saveCity)) {
         savedCities.push(saveCity);
         savedSearch.appendChild(saveBtn)
-        localStorage.setItem("cities", JSON.stringify(savedCities))
+        
       }
-    console.log(savedCities)
-
+    
+    localStorage.setItem("cities" , JSON.stringify(savedCities))
+    weatherData.style.display = "block";
+    fiveDayContainer.style.display = "block";
     // })
+    divHandler()
 }
 
 
