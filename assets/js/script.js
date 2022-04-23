@@ -26,15 +26,12 @@ let limit = 5;
 let lat;
 let lon;
 
-// $(document).ready(function(){
-//     buttonLoad()
-// })
-window.onload = function() {
-    weatherData.style.display = "hidden";
-    fiveDayContainer.style.display = "hidden";
-    buttonLoad();
-}
 
+window.onload = function(event) {
+    console.log(event)
+    buttonLoad();
+   
+}
 
 //Get User Input and Send to get City Function 
 cityFormEl.addEventListener("submit", function(event){
@@ -51,7 +48,7 @@ var getCity = function(cityName){
     let cityUrl=`${rootUrl}/geo/1.0/direct?q=${cityName}&limit=${limit}&appid=${apiKey}`
     fetch(cityUrl).then(function(response){
         return response.json().then(function(data){
-    
+        console.log(data)
         lat = data[0].lat;
         lon = data[0].lon;
         getWeather(lat, lon, cityName); 
@@ -64,12 +61,10 @@ var getWeather = function(lat, lon, cityName){
     let forecastUrl = `${rootUrl}/data/2.5/onecall?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`
     fetch(forecastUrl).then(function(response){
         return response.json().then(function(data){
-            console.log(data)
             temp.innerHTML = "Temp: " + data.current.temp.toFixed(2) + "°F"
             wind.innerHTML = "Wind: " + data.current.wind_speed.toFixed(2) + " MPH"
             humidity.innerHTML = "Humidity: " + data.current.humidity + "%"
             uv.innerHTML =  data.current.uvi
-            console.log(uv)
             let currentDate = dayjs().format('M/DD/YYYY')
             const city = document.querySelector("#city-name")
             city.innerHTML =  cityName + " " + "(" + " " + currentDate + " " + ")"
@@ -113,14 +108,10 @@ var buttonLoad = function() {
     loadCities =localStorage.getItem("cities")
     parsedCities = JSON.parse(loadCities)
     for (let i =0; i < parsedCities.length; i++){
-        createSaved(parsedCities[i])  
+        createSaved(parsedCities[i]) 
     }
 }
 
-
-var divHandler = function() {
-
-}
 
 var createSaved = function(saveCity){
     
@@ -131,21 +122,20 @@ var createSaved = function(saveCity){
     saveBtn.className = "btn btn-secondary btn-lg btn-block";
     
     saveBtn.addEventListener("click", function(){
-        console.log("clickme")
+        console.log("click")
         getCity(saveCity)
     })
     if (!savedCities.includes(saveCity)) {
         savedCities.push(saveCity);
         savedSearch.appendChild(saveBtn)
-        
       }
     
     localStorage.setItem("cities" , JSON.stringify(savedCities))
-    weatherData.style.display = "block";
-    fiveDayContainer.style.display = "block";
     // })
-    divHandler()
 }
 
-
-
+//Add event listeners on clicked generated buttons 
+savedSearch.addEventListener('click', function() {
+    weatherData.style.display = "block";
+    fiveDayContainer.style.display = "block";
+}, false);

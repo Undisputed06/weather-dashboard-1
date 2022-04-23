@@ -32,7 +32,7 @@ form #city {
   border: 1px solid black;
   font-weight: bold;
   margin-bottom: 10px;
-  /* display:none; */
+  display:none;
 }
 
 #div-1, #div-2, #div-3, #div-4, #div-5 {
@@ -43,6 +43,6 @@ form #city {
 
 }
 
-/* #five-day {
+#five-day {
   display: none; 
-} */
+}
