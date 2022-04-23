@@ -28,7 +28,6 @@ let lon;
 
 
 window.onload = function(event) {
-    console.log(event)
     buttonLoad();
    
 }
@@ -43,12 +42,10 @@ cityFormEl.addEventListener("submit", function(event){
     
 })
 
-
 var getCity = function(cityName){
     let cityUrl=`${rootUrl}/geo/1.0/direct?q=${cityName}&limit=${limit}&appid=${apiKey}`
     fetch(cityUrl).then(function(response){
         return response.json().then(function(data){
-        console.log(data)
         lat = data[0].lat;
         lon = data[0].lon;
         getWeather(lat, lon, cityName); 
@@ -104,6 +101,7 @@ var fiveDayForecast = function(daily){
     }
 }
 
+//Load buttons on page load
 var buttonLoad = function() {
     loadCities =localStorage.getItem("cities")
     parsedCities = JSON.parse(loadCities)
@@ -112,9 +110,7 @@ var buttonLoad = function() {
     }
 }
 
-
 var createSaved = function(saveCity){
-    
     let saveBtn = document.createElement("button");
     saveBtn.textContent = saveCity;
     saveBtn.setAttribute("type", "submit");
@@ -122,16 +118,14 @@ var createSaved = function(saveCity){
     saveBtn.className = "btn btn-secondary btn-lg btn-block";
     
     saveBtn.addEventListener("click", function(){
-        console.log("click")
         getCity(saveCity)
     })
     if (!savedCities.includes(saveCity)) {
         savedCities.push(saveCity);
         savedSearch.appendChild(saveBtn)
       }
-    
+    //Set local storage 
     localStorage.setItem("cities" , JSON.stringify(savedCities))
-    // })
 }
 
 //Add event listeners on clicked generated buttons 
